@@ -2,6 +2,39 @@ import streamlit as st
 import pandas as pd
 from PIL import Image
 import plotly.graph_objects as go
+import pandas as pd
+import streamlit as st
+import plotly.graph_objects as go
+
+st.title("판매자 데이터 분석")
+
+# =========================
+# CSV 파일 읽기 (Cloud용 안전 버전)
+# =========================
+# GitHub에 올린 CSV Raw URL 사용
+DATA_PATH = "https://raw.githubusercontent.com/jzeun0829-cyber/my-streamlit-app/main/seller_summary.csv"
+
+try:
+    seller_summary = pd.read_csv(DATA_PATH)
+    st.success("CSV 파일을 정상적으로 불러왔습니다!")
+except Exception as e:
+    st.error(f"CSV 파일을 불러오는 데 실패했습니다: {e}")
+    st.stop()
+
+# =========================
+# 데이터 일부 출력
+st.write("데이터 미리보기")
+st.dataframe(seller_summary.head())
+
+# =========================
+# Plotly 그래프 예시
+fig = go.Figure(
+    data=[go.Bar(x=seller_summary['seller_id'], y=seller_summary['total_sales'])]
+)
+st.plotly_chart(fig)
+
+# =========================
+# 기존 코드 다른 내용 그대로 유지
 
 # CSS 스타일
 st.markdown("""
@@ -348,3 +381,4 @@ else:
                 st.error(":x: 유효하지 않은 숫자 범위입니다.")
         else:
             st.warning("숫자만 입력해주세요.")
+
